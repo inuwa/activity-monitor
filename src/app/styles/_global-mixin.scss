@@ -1,0 +1,77 @@
+// Medium devices (tablets, 768px and up)
+$break-xs-small: 320px;
+
+// Small devices (landscape phones, 576px and up)
+$break-small: 768px;
+
+// Large devices (desktops, 992px and up)
+$break-large: 992px;
+
+// Extra large devices (large desktops, 1200px and up)
+$break-xl-large: 1200px;
+
+@mixin respond-to($media) {
+  @if $media == extra-small-screens {
+    @media only screen and (min-width: $break-xs-small) and (max-width: $break-small) {
+      @content;
+    }
+  } @else if $media == handhelds {
+    @media only screen and (max-width: $break-small) {
+      @content;
+    }
+  } @else if $media == medium-screens {
+    @media only screen and (min-width: $break-small + 1) and (max-width: $break-large - 1) {
+      @content;
+    }
+  } @else if $media == wide-screens {
+    @media only screen and (min-width: $break-large) {
+      @content;
+    }
+  }
+}
+
+@mixin flex-row($justify-content: flex-start, $align-items: center) {
+  display: flex;
+  flex-direction: row;
+  justify-content: $justify-content;
+  align-items: $align-items;
+
+  -webkit-flex-direction: row;
+  -webkit-justify-content: $justify-content;
+  -webkit-align-items: $align-items;
+}
+
+@mixin flex-column($justify-content: flex-start, $align-items: stretch) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify-content;
+  align-items: $align-items;
+
+   -webkit-flex-direction: column;
+   -webkit-justify-content: $justify-content;
+   -webkit-align-items: $align-items;
+}
+
+@mixin flex-expand-to-fill($value:1) {
+  flex: $value;
+}
+
+@mixin global-transition($property:all, $time:.25s, $cubic: ease) {
+  transition: $property $time $cubic;
+  -webkit-transition: $property $time $cubic;
+  -moz-transition: $property $time $cubic;
+  -o-transition: $property $time $cubic;
+}
+
+@mixin flex-grow($value: 1) {
+  flex-grow: $value;
+  -webkit-flex-grow: $value;
+}
+
+@mixin font-awesome-family($weight:400,$size:1.5rem,$position:relative,$top:4px) {
+  font-family: "Font Awesome 5 Pro", sans-serif;
+  font-weight: $weight;
+  font-size: $size;
+  position: $position;
+  top: $top;
+}
