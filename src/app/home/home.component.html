@@ -1,4 +1,4 @@
-<div class="wpx-800 hpx-600">
+<div *ngIf="activityCheck.menu" id="menu" class="wpx-800 hpx-600">
     <h3>ACTIVITY MONITOR</h3>
 
     <div class="detail-list p-3">
@@ -6,7 +6,7 @@
             <span>SAVE EMAIL DETAILS</span>
             <span><i class="fas fa-arrow-circle-right"></i></span>
         </div>
-        <div class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
+        <div id="activities" class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
             <span>VIEW LAST ACTIVITIES</span>
             <span><i class="fas fa-arrow-circle-right"></i></span>
         </div>
@@ -16,3 +16,4 @@
         </div>
     </div>
 </div>
+<list-activities *ngIf="activityCheck.activities"></list-activities>
