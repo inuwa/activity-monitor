@@ -1,1 +1,46 @@
-<p>list-activities works!</p>
+<ng-container *ngIf="root">
+    <tree-view [data]="root" class="wp-100">
+        <ng-template let-item="item" let-node="node" #nodeTemplate>
+            <ng-container [ngSwitch]="item.__type">
+                <ng-container *ngSwitchCase="'group'">
+                    <ng-template *ngTemplateOutlet="group; context:{ item: item, node: node }"></ng-template>
+                </ng-container>
+                <ng-container *ngSwitchCase="'document-group'">
+                    <ng-template *ngTemplateOutlet="documentGroup; context:{ item: item, node: node }"></ng-template>
+                </ng-container>
+                <ng-container *ngSwitchCase="'activity'">
+                    <ng-template *ngTemplateOutlet="activity; context:{ item: item, node: node }"></ng-template>
+                </ng-container>
+            </ng-container>
+        </ng-template>
+    </tree-view>
+</ng-container>
+<div class="wpx-200 hpx-50 p-3 report m-3" (click)="$$produceReport()">
+    Produce Report
+</div>
+<ng-template #group let-item="item" let-node="node" let-depth="depth">
+    <div *ngIf="item.children?.length" class="accordion wp-100 m-1">
+        <div class="pl-3 pr-3" (click)="$$toggle(node)">
+            <b *ngIf="!node.isExpanded">&#43;</b>
+            <b *ngIf="node.isExpanded">&#45;</b>
+        </div>
+        <b class="pl-5">{{ item.name | date : 'dd-MM-yyyy' }}</b>
+    </div>
+</ng-template>
+<ng-template #documentGroup let-item="item" let-node="node">
+    <ng-container *ngIf="item.children?.length">
+        <div class="accordion-sub">
+            <div class="pl-3 pr-3" (click)="$$toggle(node)">
+                <b *ngIf="!node.isExpanded">&#43;</b>
+                <b *ngIf="node.isExpanded">&#45;</b>
+            </div>
+            <b class="pl-5">{{ item.name }}</b>
+        </div>
+    </ng-container>
+</ng-template>
+<ng-template #activity let-item="item" let-node="node">
+    <div class="m-3">
+        <span class="p-3">
+            <input type="checkbox" [value]="item.data" #document />
+        </span>{{ item.name }}</div>
+</ng-template>

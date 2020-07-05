@@ -1,0 +1,48 @@
+@import 'global-mixin';
+@mixin height-width($width:100%, $height:100%) {
+    width: $width;
+    height: $height; 
+}
+
+@mixin content($colour:rgba(168,183,199, 0.4)) {
+    content: '';
+    border: 1px solid $colour;
+    flex-grow: 1;
+}
+
+
+:host {    
+    @include flex-column(flex-start, flex-start);
+    
+    .bulletin {
+        &.depth-0{
+            padding-left: 0;
+        }
+
+        &.depth-1{
+            padding-left: 0;
+        }
+
+        &.depth-2{
+            padding-left: 12px;
+        }
+
+        &.depth-3{
+            padding-left: 24px;
+        }
+
+        &.depth-4{
+            padding-left: 36px;
+        }
+    }
+
+    .border-sides-dotted {
+        border-left: 2px dashed red;
+        border-right: 2px dashed red;
+        border-bottom: 2px solid lightgrey;
+    }
+
+    .width-minus-margin {
+        width: calc(100% - 1.5rem);
+    }
+}

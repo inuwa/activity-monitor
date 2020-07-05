@@ -2,7 +2,7 @@
     <h3>ACTIVITY MONITOR</h3>
 
     <div class="detail-list p-3">
-        <div class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
+        <div id="email" class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
             <span>SAVE EMAIL DETAILS</span>
             <span><i class="fas fa-arrow-circle-right"></i></span>
         </div>
@@ -10,10 +10,18 @@
             <span>VIEW LAST ACTIVITIES</span>
             <span><i class="fas fa-arrow-circle-right"></i></span>
         </div>
-        <div class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
+        <div id="report" class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
             <span>CREATE REPORT</span>
             <span><i class="fas fa-arrow-circle-right"></i></span>
         </div>
     </div>
 </div>
-<list-activities *ngIf="activityCheck.activities"></list-activities>
+<div class="wpx-800 hpx-600" *ngIf="!activityCheck.menu">
+    <button id="home" class="mat-icon-button" color="accent">Home</button>
+    <ng-container *ngIf="activityCheck.activities">
+        <list-activities class="wp-100 m-3" (report)="$$createReport($event)"></list-activities>
+    </ng-container>
+    <ng-container *ngIf="activityCheck.report">
+        <report class="wp-100 m-3" [chosenActivities]="chosenActivities"></report>
+    </ng-container>
+</div>

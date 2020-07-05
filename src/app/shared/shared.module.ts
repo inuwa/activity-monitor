@@ -7,10 +7,12 @@ import { PageNotFoundComponent } from './components/';
 import { WebviewDirective } from './directives/';
 import { FormsModule } from '@angular/forms';
 import { ListActivitiesComponent } from './components/list-activities/list-activities.component';
-
+import { TreeViewComponent as TreeViewComponent } from './components/tree-view/tree-view.component';
+import { TreeNodeComponent } from './components/tree-node/tree-node.component';
+import { ReportComponent } from './components/report/report.component';
 @NgModule({
-    declarations: [PageNotFoundComponent, WebviewDirective, ListActivitiesComponent],
+    declarations: [PageNotFoundComponent, WebviewDirective, ListActivitiesComponent, TreeViewComponent, TreeNodeComponent, ReportComponent],
     imports: [CommonModule, TranslateModule, FormsModule],
-    exports: [TranslateModule, WebviewDirective, FormsModule, ListActivitiesComponent]
+    exports: [TranslateModule, WebviewDirective, FormsModule, ListActivitiesComponent, ReportComponent]
 })
 export class SharedModule { }

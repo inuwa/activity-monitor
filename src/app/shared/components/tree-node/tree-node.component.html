@@ -1,0 +1,11 @@
+<div class="bulletin pl-1 depth-{{ depth }}"
+    [ngClass]="{'ml-3 mr-3 border-sides-dotted width-minus-margin' : depth > 2 , 'wp-100': depth < 3}">
+    <ng-container *ngTemplateOutlet="nodeTemplate; context: { item: data, node: treeNode, depth: depth }"></ng-container>
+    <ng-container *ngIf="data.children?.length">
+        <div id="nodeChildren" #nodeChildren>
+            <ng-container *ngFor="let child of data.children">
+                <tree-node [data]="child" [depth]="depth+1"></tree-node>
+            </ng-container>
+        </div>
+    </ng-container>
+</div>

@@ -1,0 +1,64 @@
+@import "global-mixin";
+@import "_colors";
+
+:host {
+    @include flex-column(flex-start, flex-start);
+
+    .expanded {
+        @include flex-column(center, center);
+        width: 0.5rem;
+        height: 0.5rem;
+        background-color: grey;
+        color: white;
+        border-radius: 12px;
+    }
+
+    .collapsed {
+        @include flex-column(center, center);
+        width: 10px;
+        height: 10px;
+        background-color: lightslategrey;
+        color: yellow;
+        border-radius: 12px;
+    }
+}
+
+.space-between {
+    @include flex-row(space-between, center);
+}
+
+.accordion {
+    @include flex-row(flex-start, flex-start);
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 1rem;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+
+    &-sub {
+        @include flex-row(flex-start, flex-start);
+        background-color: pink;
+        color: royalblue;
+        cursor: pointer;
+        padding: 0.6rem;
+        text-align: left;
+        border: 1px white solid;
+        border-radius: 0.8rem;
+        // box-shadow: 3px 5px 5px darken($color: $theme-light-orange, $amount: 2);
+        outline: none;
+        transition: 0.4s;
+    }
+}
+
+.report {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 1rem;
+    text-align: left;
+    border: grey;
+    box-shadow: 3px 5px 5px darken($color: grey, $amount: 2);
+}

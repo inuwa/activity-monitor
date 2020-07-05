@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener, OnChanges } from '@angular/core';
 import { HomeService } from './home.service';
+import { Activity } from '../_/activity';
 
 @Component({
     selector: 'app-home',
@@ -13,19 +14,31 @@ export class HomeComponent implements OnInit, OnChanges {
         report: false,
         email: false
     };
-    @HostListener('click', ['$event']) $$changeComponentState($event: MouseEvent) {
+    chosenActivities: Activity[];
+    @HostListener('click', ['$event']) changeComponentState($event: MouseEvent) {
         const target = (<HTMLDivElement>$event.target);
         switch (target.id) {
-            // case 'menu':
-            //     this._homeService.changeComponentState('menu');
-            //     break;
             case 'activities':
-                this._homeService.changeComponentState('activities');
-                this.activityCheck = this._homeService.activityCheck;
+            case 'email':
+            case 'home':
+            case 'menu':
+            case 'report':
+                this.$$changeComponentState(target.id);
                 break;
             default:
                 break;
         }
+    }
+
+    $$changeComponentState(id: string) {
+        this._homeService.changeComponentState(id);
+        this.activityCheck = this._homeService.activityCheck;
+    }
+
+    $$createReport(chosenActivities: Activity[]) {
+        this.chosenActivities = chosenActivities;
+        console.log(this.chosenActivities);
+        this.$$changeComponentState('report');
     }
 
     constructor(private _homeService: HomeService) { }

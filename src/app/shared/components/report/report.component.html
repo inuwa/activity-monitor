@@ -1,0 +1,4 @@
+<div *ngFor="let activity of chosenActivities">
+    <p>{{activity | json }}</p>
+</div>
+<button (click)="$$sendReport()">Send Report</button>

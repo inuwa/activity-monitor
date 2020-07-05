@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 html, body {
     background-color: white;
     font-family: Arial, Helvetica, sans-serif;
@@ -8,6 +9,13 @@ html, body {
     width: 100%;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
 
 $interval: 5;
 
