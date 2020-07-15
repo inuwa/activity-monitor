@@ -4,7 +4,7 @@ export class Activity {
     private _data: FileData;
 
     get dateModified() {
-        return this._data.fileStat.ctime;
+        return this._data.fileStat.mtimeMs;
     };
 
     get name(): string {
@@ -80,11 +80,13 @@ export class Activity {
     }
 
     get data() {
-        return JSON.stringify({
+        return {
             name: this.name,
-            dateModified: this.dateModified,
+            dateModified: new Date(this.dateModified).toLocaleDateString(),
+            dateModifiedMilliseconds: this.dateModified,
             __type: this.__type,
+            extension: this._extension,
             group: this.group
-        })
+        };
     }
 }

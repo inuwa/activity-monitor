@@ -5,6 +5,8 @@ import { ipcMain } from 'electron';
 import { FileMaker } from './file-processing/file-maker';
 import { TemplateCreator } from './file-processing/template-creator';
 import { ReadActivities } from './activities-processing/read-activities';
+import { Activity } from './activities-processing/_/activity';
+import { ActivityDb } from './activities-processing/activity-db';
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
     serve = args.some(val => val === '--serve');
@@ -43,6 +45,10 @@ function createWindow(): BrowserWindow {
             slashes: true
         }));
     }
+
+    win.on('focus', () => {
+        _insertActivities();
+    })
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -83,8 +89,7 @@ try {
     });
 
     _applicationMessageReceiver();
-    _readDirAddress();
-
+    _getActivities();
 } catch (e) {
     // Catch Error
     // throw e;
@@ -101,7 +106,20 @@ function _applicationMessageReceiver() {
     })
 }
 
-function _readDirAddress() {
-    const readActivities = new ReadActivities();
-    readActivities.getActivities();
+function _insertActivities() {
+    const listOfActivities: Activity[] = ReadActivities.getActivities();
+    if (!listOfActivities || !listOfActivities.length) return;
+    // store Activities
+    const activityDb: ActivityDb = new ActivityDb();
+    activityDb.insertActivities(listOfActivities);
+}
+
+function _getActivities() {
+    const activityDb: ActivityDb = new ActivityDb();
+    activityDb.getActivities()
+    return;
+    // ipcMain.on('get-activities', (event, args) => {
+    //     const activityDb: ActivityDb = new ActivityDb();
+    //     activityDb.getActivities().then(e => console.log('yyychgckhf' + e));
+    // });
 }

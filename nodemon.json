@@ -1,0 +1,11 @@
+{
+    "watch": [
+        "activities-processing",
+        "file-processing",
+        "main.ts"
+    ],
+    "ext": "ts",
+    "ignore": [
+        "**/*.spec.ts"
+    ]
+}

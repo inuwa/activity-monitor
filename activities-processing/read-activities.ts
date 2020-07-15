@@ -1,30 +1,42 @@
 import { readFile, readdirSync, readdir, Dirent, statSync, Stats } from 'fs';
-import { getDocumentsFolder } from 'platform-folders';
+import { getDocumentsFolder, getDownloadsFolder } from 'platform-folders';
 import { join } from 'path';
 import { Activity } from './_/activity';
-export class ReadActivities {
-    private _listOfItems: Activity[] = [];
-    getActivities() {
-        const dirPath = getDocumentsFolder();
-        // const listOfItems: string[] = readdirSync(dirPath, { encoding: 'utf-8' });
-        this._getActivities(dirPath);
-        console.log(this._listOfItems);
+import { DateCompare } from './_/date-compare';
+import { FileMethods } from './_/file-extension';
+export namespace ReadActivities {
+    const _listOfItems: Activity[] = [];
+
+
+    export function getActivities(): Activity[] {
+        // const dirPath = getDocumentsFolder();
+        const dirPath = getDownloadsFolder();
+        _getActivities(dirPath);
+        return _listOfItems;
     }
 
-    private _getActivities(dirPath: string) {
+    function _getActivities(dirPath: string) {
         const listOfItems: Dirent[] = readdirSync(dirPath, { encoding: 'utf-8', withFileTypes: true });
-        listOfItems.forEach((dirent: Dirent) => {
-            if (dirent.isDirectory()) {
-                const _dirPath = join(dirPath, dirent.name);
-                return this._getActivities(_dirPath);
-            }
-            if (!this._shouldBeStored(dirent.name)) return;
-            const fileStats: Stats = statSync(join(dirPath, dirent.name));
-            const activity = new Activity({ name: dirent.name, fileStat: fileStats });
-            // get the stats name details
-            return this._listOfItems.push(activity);
 
-        });
+        listOfItems.filter(dirent => !dirent.name.startsWith('.') || dirent.name.indexOf('node_modules') < 0).forEach(
+            (dirent: Dirent) => {
+                if (dirent.isDirectory()) {
+                    const _dirPath = join(dirPath, dirent.name);
+                    _getActivities(_dirPath);
+                }
+
+                if (!FileMethods.shouldBeStored(dirent.name)) return;
+                let fileStat: Stats;
+                try {
+                    fileStat = statSync(join(dirPath, dirent.name));
+                } catch (exception) {
+                    console.log(exception);
+                }
+                if (!fileStat || !DateCompare.isToday(fileStat.mtimeMs)) return;
+                const activity = new Activity({ name: dirent.name, fileStat: fileStat });
+                _listOfItems.push(activity);
+            }
+        )
     }
 
     /**
@@ -35,10 +47,4 @@ export class ReadActivities {
      *    group: string
      *  }
      */
-
-    private _shouldBeStored(filename: string): boolean {
-        const fileExtensions: string[] = ['csv', 'docx', 'doc', 'docm', 'dot', 'dotx', 'odt', 'xps', 'html', 'htm', 'mhtm', 'mhtml', 'ods', 'xls', 'xlsm', 'xlsx', 'xlsb', 'xlw', 'xlr', 'xlam', 'odp', 'ppt', 'pptx', 'pps', 'ppsm', 'ppsx', 'rtf', 'txt', 'bmp', 'gif', 'jpg', 'jpeg', 'png', 'tif', 'mpp', 'xer', 'xml', 'dxf', 'dwf', 'dwf'];
-
-        return fileExtensions.some(e => filename.endsWith(e));
-    }
 }
