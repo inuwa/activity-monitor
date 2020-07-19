@@ -1,4 +1,5 @@
 import { FileData } from './file-data.interface';
+import { ActivityDbTemplate } from './interface/activity-db-template.interface';
 
 export class Activity {
     private _data: FileData;
@@ -79,7 +80,7 @@ export class Activity {
         }
     }
 
-    get data() {
+    get data(): ActivityDbTemplate {
         return {
             name: this.name,
             dateModified: new Date(this.dateModifiedMilliseconds).toLocaleDateString(),

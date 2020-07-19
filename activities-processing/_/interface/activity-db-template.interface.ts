@@ -1,6 +1,6 @@
 export interface ActivityDbTemplate {
     name: string;
-    dateModified: Date;
+    dateModified: string;
     dateModifiedMilliseconds: number;
     __type: string;
     extension: string;

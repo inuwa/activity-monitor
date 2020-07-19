@@ -17,15 +17,30 @@ var ActivityDb = /** @class */ (function () {
     ActivityDb.prototype.deleteActivities = function () {
     };
     ActivityDb.prototype.insertActivities = function (activities) {
+        var _this = this;
         if (!this._db)
             throw Error('Database not instantiated');
-        var _activities = activities.map(function (e) { return e.data; });
-        console.log(_activities);
-        this._db.insert(_activities, function (error, _activities) {
+        // get All activities check that they do not exist in activities
+        var today = new Date().toLocaleDateString();
+        this._db.find({ dateModified: { $in: [today] } }, function (error, storedActivities) {
             if (error)
                 throw error;
-            console.log('files inserted');
+            var _activities = checkNoDuplicates(storedActivities, activities);
+            (_activities.length) ? insertActivities(_activities) : doNothing();
         });
+        var checkNoDuplicates = function (storedActivities, activities) {
+            return (storedActivities && storedActivities.length) ? activities.filter(function (acvty) {
+                return (storedActivities.find(function (sa) { return sa.name === acvty.data.name; })) ? false : true;
+            }).map(function (e) { return e.data; }) : activities.map(function (e) { return e.data; });
+        };
+        var insertActivities = function (activities) {
+            _this._db.insert(activities, function (error, _activities) {
+                if (error)
+                    throw error;
+                console.log('files inserted');
+            });
+        };
+        var doNothing = function () { return; };
     };
     ActivityDb.prototype.getActivities = function () {
         var _this = this;
@@ -34,7 +49,7 @@ var ActivityDb = /** @class */ (function () {
         var today = new Date();
         var sevenDaysAgoMilleseconds = today.getTime() - (this._millisecondsInADay * 7);
         return new Promise(function (resolve, reject) {
-            _this._db.find({ dateModifiedMilliseconds: { $gte: sevenDaysAgoMilleseconds } }, function (error, results) { return error ? reject(error) : resolve(__spreadArrays(results)); });
+            _this._db.find({ dateModifiedMilliseconds: { $gte: sevenDaysAgoMilleseconds } }, function (error, activities) { return error ? reject(error) : resolve(__spreadArrays(activities)); });
         });
     };
     ActivityDb.prototype._archiveActivities = function () { return; };

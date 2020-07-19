@@ -23,12 +23,28 @@ export class ActivityDb {
 
     insertActivities(activities: Activity[]) {
         if (!this._db) throw Error('Database not instantiated');
-        const _activities = activities.map(e => e.data);
-        console.log(_activities);
-        this._db.insert(_activities, (error, _activities) => {
+        // get All activities check that they do not exist in activities
+        const today: string = new Date().toLocaleDateString();
+        this._db.find({ dateModified: { $in: [today] } }, (error: Error, storedActivities: ActivityDbTemplate[]) => {
             if (error) throw error;
-            console.log('files inserted');
+            const _activities = checkNoDuplicates(storedActivities, activities);
+            (_activities.length) ? insertActivities(_activities) : doNothing();
         });
+
+        const checkNoDuplicates = (storedActivities: ActivityDbTemplate[], activities: Activity[]) => {
+            return (storedActivities && storedActivities.length) ? activities.filter(acvty => {
+                return (storedActivities.find(sa => sa.name === acvty.data.name)) ? false : true;
+            }).map(e => e.data) : activities.map(e => e.data);
+        }
+
+        const insertActivities = (activities: ActivityDbTemplate[]) => {
+            this._db.insert(activities, (error: Error, _activities: ActivityDbTemplate[]) => {
+                if (error) throw error;
+                console.log('files inserted');
+            });
+        }
+
+        const doNothing = () => { return; };
     }
 
     getActivities(): Promise<any> {
@@ -37,7 +53,7 @@ export class ActivityDb {
         const sevenDaysAgoMilleseconds: number = today.getTime() - (this._millisecondsInADay * 7);
         return new Promise((resolve, reject) => {
             this._db.find({ dateModifiedMilliseconds: { $gte: sevenDaysAgoMilleseconds } },
-                (error: Error, results: ActivityDbTemplate[]) => error ? reject(error) : resolve([...results])
+                (error: Error, activities: ActivityDbTemplate[]) => error ? reject(error) : resolve([...activities])
             );
         });
     }

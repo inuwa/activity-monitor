@@ -27,7 +27,6 @@ export namespace ReadActivities {
                 }
 
                 if (!FileMethods.shouldBeStored(dirent.name)) return;
-                console.log(dirent.name);
                 let fileStat: Stats;
                 try {
                     fileStat = statSync(join(dirPath, dirent.name));

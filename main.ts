@@ -8,6 +8,7 @@ import { ReadActivities } from './activities-processing/read-activities';
 import { Activity } from './activities-processing/_/activity';
 import { ActivityDb } from './activities-processing/activity-db';
 let win: BrowserWindow = null;
+const activityDb: ActivityDb = new ActivityDb();
 const args = process.argv.slice(1),
     serve = args.some(val => val === '--serve');
 
@@ -111,13 +112,13 @@ function _insertActivities() {
     const listOfActivities: Activity[] = ReadActivities.getActivities();
     if (!listOfActivities || !listOfActivities.length) return;
     // store Activities
-    const activityDb: ActivityDb = new ActivityDb();
+    // const activityDb: ActivityDb = new ActivityDb();
     activityDb.insertActivities(listOfActivities);
 }
 
 function _getActivities() {
     ipcMain.handle('get-activities', async (event, args) => {
-        const activityDb: ActivityDb = new ActivityDb();
+        // const activityDb: ActivityDb = new ActivityDb();
         return activityDb.getActivities();
     });
 }

@@ -3,13 +3,13 @@ export class Activity {
     name: string;
     dateModified: Date;
     dateModifiedMilliseconds: number;
-    private _extension: string;
+    extension: string;
     group: string;
     constructor(data: ActivityDbTemplate) {
         this.name = data.name;
         this.dateModified = data.dateModified;
         this.dateModifiedMilliseconds = data.dateModifiedMilliseconds;
-        this._extension = data.extension;
+        this.extension = data.extension;
         this.group = data.group;
     }
 

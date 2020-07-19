@@ -26,7 +26,6 @@ var ReadActivities;
             }
             if (!file_extension_1.FileMethods.shouldBeStored(dirent.name))
                 return;
-            console.log(dirent.name);
             var fileStat;
             try {
                 fileStat = fs_1.statSync(path_1.join(dirPath, dirent.name));
