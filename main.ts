@@ -46,9 +46,7 @@ function createWindow(): BrowserWindow {
         }));
     }
 
-    win.on('focus', () => {
-        _insertActivities();
-    })
+    win.on('focus', () => { });
 
     // Emitted when the window is closed.
     win.on('closed', () => {
@@ -69,7 +67,10 @@ try {
     // initialization and is ready to create browser windows.
     // Some APIs can only be used after this event occurs.
     // Added 400 ms to fix the black background issue while using transparent window. More detais at https://github.com/electron/electron/issues/15947
-    app.on('ready', () => setTimeout(createWindow, 400));
+    app.on('ready', () => {
+        setTimeout(createWindow, 400);
+        _insertActivities();
+    });
 
     // Quit when all windows are closed.
     app.on('window-all-closed', () => {
@@ -115,11 +116,8 @@ function _insertActivities() {
 }
 
 function _getActivities() {
-    const activityDb: ActivityDb = new ActivityDb();
-    activityDb.getActivities()
-    return;
-    // ipcMain.on('get-activities', (event, args) => {
-    //     const activityDb: ActivityDb = new ActivityDb();
-    //     activityDb.getActivities().then(e => console.log('yyychgckhf' + e));
-    // });
+    ipcMain.handle('get-activities', async (event, args) => {
+        const activityDb: ActivityDb = new ActivityDb();
+        return activityDb.getActivities();
+    });
 }

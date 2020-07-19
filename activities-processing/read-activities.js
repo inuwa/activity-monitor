@@ -9,10 +9,11 @@ var file_extension_1 = require("./_/file-extension");
 var ReadActivities;
 (function (ReadActivities) {
     var _listOfItems = [];
+    var _paths = [platform_folders_1.getDocumentsFolder(), platform_folders_1.getDownloadsFolder()];
     function getActivities() {
-        // const dirPath = getDocumentsFolder();
-        var dirPath = platform_folders_1.getDownloadsFolder();
-        _getActivities(dirPath);
+        _paths.forEach(function (dirPath) {
+            _getActivities(dirPath);
+        });
         return _listOfItems;
     }
     ReadActivities.getActivities = getActivities;
@@ -25,6 +26,7 @@ var ReadActivities;
             }
             if (!file_extension_1.FileMethods.shouldBeStored(dirent.name))
                 return;
+            console.log(dirent.name);
             var fileStat;
             try {
                 fileStat = fs_1.statSync(path_1.join(dirPath, dirent.name));
@@ -38,13 +40,5 @@ var ReadActivities;
             _listOfItems.push(activity);
         });
     }
-    /**
-     * interface Activity {
-     *      name: string;
-     *     dateModified: string;
-     *     __type: string,
-     *    group: string
-     *  }
-     */
 })(ReadActivities = exports.ReadActivities || (exports.ReadActivities = {}));
 //# sourceMappingURL=read-activities.js.map

@@ -48,7 +48,6 @@ export class ListActivitiesComponent implements OnInit, OnDestroy {
 
     loadActivities() {
         this._subscription = this._homeService.getGroupedActivities$().subscribe((groupedActivities: GroupedActivity[]) => {
-            groupedActivities;
             this.root = this._getTree(groupedActivities);
             this._changeDetectorRef.detectChanges();
         });

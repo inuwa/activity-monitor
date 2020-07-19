@@ -3,7 +3,7 @@ import { FileData } from './file-data.interface';
 export class Activity {
     private _data: FileData;
 
-    get dateModified() {
+    get dateModifiedMilliseconds() {
         return this._data.fileStat.mtimeMs;
     };
 
@@ -82,8 +82,8 @@ export class Activity {
     get data() {
         return {
             name: this.name,
-            dateModified: new Date(this.dateModified).toLocaleDateString(),
-            dateModifiedMilliseconds: this.dateModified,
+            dateModified: new Date(this.dateModifiedMilliseconds).toLocaleDateString(),
+            dateModifiedMilliseconds: this.dateModifiedMilliseconds,
             __type: this.__type,
             extension: this._extension,
             group: this.group

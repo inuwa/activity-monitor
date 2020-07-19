@@ -24,7 +24,7 @@
             <b *ngIf="!node.isExpanded">&#43;</b>
             <b *ngIf="node.isExpanded">&#45;</b>
         </div>
-        <b class="pl-5">{{ item.name | date : 'dd-MM-yyyy' }}</b>
+        <b class="pl-5">{{ item.name }}</b>
     </div>
 </ng-template>
 <ng-template #documentGroup let-item="item" let-node="node">

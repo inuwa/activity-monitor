@@ -4,7 +4,7 @@ var Activity = /** @class */ (function () {
     function Activity(data) {
         this._data = data;
     }
-    Object.defineProperty(Activity.prototype, "dateModified", {
+    Object.defineProperty(Activity.prototype, "dateModifiedMilliseconds", {
         get: function () {
             return this._data.fileStat.mtimeMs;
         },
@@ -96,8 +96,8 @@ var Activity = /** @class */ (function () {
         get: function () {
             return {
                 name: this.name,
-                dateModified: new Date(this.dateModified).toLocaleDateString(),
-                dateModifiedMilliseconds: this.dateModified,
+                dateModified: new Date(this.dateModifiedMilliseconds).toLocaleDateString(),
+                dateModifiedMilliseconds: this.dateModifiedMilliseconds,
                 __type: this.__type,
                 extension: this._extension,
                 group: this.group

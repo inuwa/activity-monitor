@@ -1,8 +1,14 @@
 "use strict";
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var DataStore = require("nedb");
 var path_1 = require("path");
-var util_1 = require("util");
 var ActivityDb = /** @class */ (function () {
     function ActivityDb() {
         this._millisecondsInADay = 86400000;
@@ -22,15 +28,14 @@ var ActivityDb = /** @class */ (function () {
         });
     };
     ActivityDb.prototype.getActivities = function () {
+        var _this = this;
         if (!this._db)
             throw Error('Database not instantiated.');
         var today = new Date();
         var sevenDaysAgoMilleseconds = today.getTime() - (this._millisecondsInADay * 7);
-        // return this._db.find({ dateModified: { $gt: sevenDaysAgoMilleseconds } });
-        var findPromisify = util_1.promisify(this._db.find).apply({ dateModified: { $gt: sevenDaysAgoMilleseconds } });
-        console.log(findPromisify);
-        return findPromisify();
-        // return findPromisify({ dateModified: { $gt: sevenDaysAgoMilleseconds } });
+        return new Promise(function (resolve, reject) {
+            _this._db.find({ dateModifiedMilliseconds: { $gte: sevenDaysAgoMilleseconds } }, function (error, results) { return error ? reject(error) : resolve(__spreadArrays(results)); });
+        });
     };
     ActivityDb.prototype._archiveActivities = function () { return; };
     ActivityDb.prototype._createDb = function () {

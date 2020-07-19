@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { Observable, of, from } from 'rxjs';
+import { mergeMap, map } from 'rxjs/operators';
 import { Activity } from '../_/activity';
 import { GroupedActivity } from '../_/interfaces/grouped-activity.interface';
 import { DocumentGroup } from '../_/interfaces/document-group.interface';
+import { ipcRenderer } from 'electron';
+import { ActivityDbTemplate } from '../_/interfaces/activity-db-template.interface';
 @Injectable()
 export class HomeService {
     private _activityCheck = {
@@ -33,46 +35,51 @@ export class HomeService {
     }
 
     private _getActivities$(): Observable<Activity[]> {
-        return of(this._getRawActivties());
+        const resultsPromise = ipcRenderer.invoke('get-activities');
+        return from(resultsPromise).pipe(
+            map((results: ActivityDbTemplate[]) => {
+                return results.map(e => new Activity(e));
+            })
+        );
     }
 
 
-    private _getRawActivties(): Activity[] {
-        const testActivites = [
-            {
-                name: 'file.docx',
-                dateModified: new Date(2019, 10, 7),
-            }, {
-                name: 'file.dwg',
-                dateModified: new Date(2020, 6, 9),
-            }, {
-                name: 'file.xlsx',
-                dateModified: new Date(2017, 6, 7),
-            }, {
-                name: 'file.html',
-                dateModified: new Date(2015, 6, 9),
-            }, {
-                name: 'file.pptx',
-                dateModified: new Date(2024, 8, 8),
-            },
-            {
-                name: 'file.rtf',
-                dateModified: new Date(2023, 10, 8),
-            }, {
-                name: 'file.bmp',
-                dateModified: new Date(2015, 8, 6),
-            },
-            {
-                name: 'file.xer',
-                dateModified: new Date(2008, 8, 8),
-            }, {
-                name: 'file.dwf',
-                dateModified: new Date(2003, 9, 9),
-            }
-        ]
+    // private _getRawActivties(): Activity[] {
+    //     const testActivites = [
+    //         {
+    //             name: 'file.docx',
+    //             dateModified: new Date(2019, 10, 7),
+    //         }, {
+    //             name: 'file.dwg',
+    //             dateModified: new Date(2020, 6, 9),
+    //         }, {
+    //             name: 'file.xlsx',
+    //             dateModified: new Date(2017, 6, 7),
+    //         }, {
+    //             name: 'file.html',
+    //             dateModified: new Date(2015, 6, 9),
+    //         }, {
+    //             name: 'file.pptx',
+    //             dateModified: new Date(2024, 8, 8),
+    //         },
+    //         {
+    //             name: 'file.rtf',
+    //             dateModified: new Date(2023, 10, 8),
+    //         }, {
+    //             name: 'file.bmp',
+    //             dateModified: new Date(2015, 8, 6),
+    //         },
+    //         {
+    //             name: 'file.xer',
+    //             dateModified: new Date(2008, 8, 8),
+    //         }, {
+    //             name: 'file.dwf',
+    //             dateModified: new Date(2003, 9, 9),
+    //         }
+    //     ]
 
-        return testActivites.map(e => new Activity(e));
-    }
+    //     // return testActivites.map(e => new Activity(e));
+    // }
 
     private _groupActivities(activities: Activity[]): GroupedActivity[] {
         const groupedActivities: GroupedActivity[] = [];
@@ -102,8 +109,8 @@ export class HomeService {
         const uniqueDates: Date[] = [];
         const uniqueGroups: string[] = [];
         groups.forEach(e => {
-            if (uniqueDates.indexOf(e.dateModified) < 0) uniqueDates.push(e.dateModified);
-            if (uniqueGroups.indexOf(e.group) < 0) uniqueGroups.push(e.group);
+            if (!uniqueDates.find(ud => ud === e.dateModified)) uniqueDates.push(e.dateModified);
+            if (!uniqueGroups.find(ug => ug === e.group)) uniqueGroups.push(e.group);
         });
         return { uniqueDates, uniqueGroups };
     }

@@ -1,4 +1,4 @@
-import { readFile, readdirSync, readdir, Dirent, statSync, Stats } from 'fs';
+import { readdirSync, Dirent, statSync, Stats } from 'fs';
 import { getDocumentsFolder, getDownloadsFolder } from 'platform-folders';
 import { join } from 'path';
 import { Activity } from './_/activity';
@@ -6,12 +6,13 @@ import { DateCompare } from './_/date-compare';
 import { FileMethods } from './_/file-extension';
 export namespace ReadActivities {
     const _listOfItems: Activity[] = [];
-
+    const _paths: string[] = [getDocumentsFolder(), getDownloadsFolder()];
 
     export function getActivities(): Activity[] {
-        // const dirPath = getDocumentsFolder();
-        const dirPath = getDownloadsFolder();
-        _getActivities(dirPath);
+        _paths.forEach((dirPath) => {
+            _getActivities(dirPath);
+        });
+
         return _listOfItems;
     }
 
@@ -26,6 +27,7 @@ export namespace ReadActivities {
                 }
 
                 if (!FileMethods.shouldBeStored(dirent.name)) return;
+                console.log(dirent.name);
                 let fileStat: Stats;
                 try {
                     fileStat = statSync(join(dirPath, dirent.name));
@@ -38,13 +40,4 @@ export namespace ReadActivities {
             }
         )
     }
-
-    /**
-     * interface Activity {
-     *      name: string;
-     *     dateModified: string;
-     *     __type: string,
-     *    group: string
-     *  }
-     */
 }
