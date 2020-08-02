@@ -1,23 +1,14 @@
-<div *ngIf="activityCheck.menu" id="menu" class="wpx-800 hpx-600">
-    <h3>ACTIVITY MONITOR</h3>
-
-    <div class="detail-list p-3">
-        <div id="email" class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
-            <span>SAVE EMAIL DETAILS</span>
-            <span><i class="fas fa-arrow-circle-right"></i></span>
-        </div>
-        <div id="activities" class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
-            <span>VIEW LAST ACTIVITIES</span>
-            <span><i class="fas fa-arrow-circle-right"></i></span>
-        </div>
-        <div id="report" class="detail-list-item m-1 pl-3 pr-3 space-between w-100">
-            <span>CREATE REPORT</span>
-            <span><i class="fas fa-arrow-circle-right"></i></span>
-        </div>
-    </div>
+<div *ngIf="activityCheck.menu" id="menu" class="jumbotron">
+    <h1 class="display-4">ACTIVITY MONITOR</h1>
+    <p class="lead">This is a proof of concept. You can create report by selecting activities that have been stored for the date.</p>
+    <hr class="my-4">
+    <p>To use select activities and and then create report. Reports are stored in the downloads folder.</p>
+    <button id="activities" class="btn btn-primary btn-lg" role="button">
+        View Last Activities
+    </button>
 </div>
-<div class="wpx-800 hpx-600" *ngIf="!activityCheck.menu">
-    <button id="home" class="mat-icon-button" color="accent">Home</button>
+<div class="wpx-800 fill-height" *ngIf="!activityCheck.menu">
+    <button id="home" class="btn btn-primary btn-lg m-3">Home</button>
     <ng-container *ngIf="activityCheck.activities">
         <list-activities class="wp-100 m-3" (report)="$$createReport($event)"></list-activities>
     </ng-container>

@@ -20,6 +20,7 @@ import { AppComponent } from './app.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // AoT requires an exported function for factories
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -42,7 +43,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
             }
         }),
         MatIconModule,
-        MatButtonModule
+        MatButtonModule,
+        NgbModule
     ],
     providers: [],
     bootstrap: [AppComponent]

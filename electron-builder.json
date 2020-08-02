@@ -1,8 +1,17 @@
 {
-  "productName": "angular-electron",
-  "directories": {
-    "output": "release/"
-  },
+    "productName": "angular-electron",
+    "directories": {
+        "output": "release/"
+    },
+    "extraFiles": [
+        "activities-processing${/*}",
+        "activities-processing/read-activities",
+        "activities-processing/_/activity",
+        "activities-processing/activity-db",
+        "file-processing/file-maker",
+        "file-processing/template-creator",
+        "constants/file.enum"
+    ],
     "files": [
         "**/*",
         "!**/*.ts",
@@ -17,24 +26,33 @@
         "!_config.yml",
         "!karma.conf.js",
         "!tsconfig.json",
-        "!tslint.json"
+        "!tslint.json",
+        "activities-processing${/*}",
+        "constants${/*}",
+        "file-processing{/*}",
+        "activities-processing${/*}",
+        "activities-processing/read-activities.js",
+        "activities-processing/activity-db.db",
+        "file-processing/file-maker",
+        "file-processing/template-creator",
+        "constants/file.enum"
     ],
-  "win": {
-    "icon": "dist/assets/icons",
-    "target": [
-      "portable"
-    ]
-  },
-  "mac": {
-    "icon": "dist/assets/icons",
-    "target": [
-      "dmg"
-    ]
-  },
-  "linux": {
-    "icon": "dist/assets/icons",
-    "target": [
-      "AppImage"
-    ]
-  }
+    "win": {
+        "icon": "dist/assets/icons",
+        "target": [
+            "portable"
+        ]
+    },
+    "mac": {
+        "icon": "dist/assets/icons",
+        "target": [
+            "dmg"
+        ]
+    },
+    "linux": {
+        "icon": "dist/assets/icons",
+        "target": [
+            "AppImage"
+        ]
+    }
 }

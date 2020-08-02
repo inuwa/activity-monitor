@@ -6,15 +6,23 @@ var path_1 = require("path");
 var FileMaker = /** @class */ (function () {
     function FileMaker() {
     }
-    FileMaker.prototype.writeFileToDocumentsFolder = function (fileName, buffer) {
+    FileMaker.prototype.writeFileToFolder = function (fileName, buffer, filePath) {
         var downloadsFolder = platform_folders_1.getDownloadsFolder();
-        var dirPath = path_1.join(downloadsFolder, fileName);
+        var dirPath = (filePath) ? filePath : path_1.join(downloadsFolder, fileName);
         fs_1.writeFile(dirPath, buffer, function (error) {
             if (error)
                 throw error;
             console.log('File Saved Successfully');
         });
     };
+    FileMaker.prototype.saveTemplateFile = function (filePath, destFilePath) {
+        return new Promise(function (resolve, reject) {
+            fs_1.copyFile(filePath, destFilePath, function (error) {
+                (error) ? reject(error) : resolve('file saved');
+            });
+        });
+    };
+    ;
     return FileMaker;
 }());
 exports.FileMaker = FileMaker;

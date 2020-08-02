@@ -15,15 +15,17 @@ import { Activity } from '../../../_/activity';
 })
 export class ListActivitiesComponent implements OnInit, OnDestroy {
     root: TreeData<any>;
+    selected: boolean;
+    closeAlert: boolean;
     private _subscription: Subscription;
     @Output('report') _reportEmitter: EventEmitter<Activity[]> = new EventEmitter<Activity[]>();
     @ViewChildren('document', { read: ElementRef }) checkboxes!: QueryList<ElementRef>;
     constructor(private _homeService: HomeService, private _changeDetectorRef: ChangeDetectorRef) { }
 
     @HostListener('click', ['$event']) $$captureEvents($event) {
-        console.log($event);
         const values = this.checkboxes.filter(e => e.nativeElement.checked);
-        console.log(values, this.checkboxes);
+        this.selected = (values.length) ? true : false;
+        this.closeAlert = (values.length) ? true : false;
     }
 
     ngOnInit() {
@@ -33,6 +35,10 @@ export class ListActivitiesComponent implements OnInit, OnDestroy {
     ngOnDestroy() {
         this._subscription.unsubscribe();
         this._subscription = null;
+    }
+
+    $$close() {
+        this.closeAlert = false;
     }
 
     $$toggle(node: TreeNodeComponent) {

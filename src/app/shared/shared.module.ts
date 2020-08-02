@@ -10,9 +10,11 @@ import { ListActivitiesComponent } from './components/list-activities/list-activ
 import { TreeViewComponent as TreeViewComponent } from './components/tree-view/tree-view.component';
 import { TreeNodeComponent } from './components/tree-node/tree-node.component';
 import { ReportComponent } from './components/report/report.component';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+
 @NgModule({
     declarations: [PageNotFoundComponent, WebviewDirective, ListActivitiesComponent, TreeViewComponent, TreeNodeComponent, ReportComponent],
-    imports: [CommonModule, TranslateModule, FormsModule],
+    imports: [CommonModule, TranslateModule, FormsModule, NgbAlertModule],
     exports: [TranslateModule, WebviewDirective, FormsModule, ListActivitiesComponent, ReportComponent]
 })
 export class SharedModule { }

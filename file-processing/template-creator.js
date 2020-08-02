@@ -37,18 +37,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs_1 = require("fs");
-var platform_folders_1 = require("platform-folders");
-var path_1 = require("path");
 var easy_template_x_1 = require("easy-template-x");
 var TemplateCreator = /** @class */ (function () {
     function TemplateCreator() {
     }
-    TemplateCreator.prototype.createDocx = function (activities) {
+    TemplateCreator.prototype.createDocx = function (activities, templatePath) {
         return __awaiter(this, void 0, void 0, function () {
-            var downloadsFolder, templatePath, templateFile, handler;
+            var templateFile, handler;
             return __generator(this, function (_a) {
-                downloadsFolder = platform_folders_1.getDownloadsFolder();
-                templatePath = path_1.join(downloadsFolder, 'arali.docx');
                 templateFile = fs_1.readFileSync(templatePath);
                 handler = new easy_template_x_1.TemplateHandler();
                 return [2 /*return*/, handler.process(templateFile, { activities: activities })];

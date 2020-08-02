@@ -1,23 +1,30 @@
-<ng-container *ngIf="root">
-    <tree-view [data]="root" class="wp-100">
-        <ng-template let-item="item" let-node="node" #nodeTemplate>
-            <ng-container [ngSwitch]="item.__type">
-                <ng-container *ngSwitchCase="'group'">
-                    <ng-template *ngTemplateOutlet="group; context:{ item: item, node: node }"></ng-template>
+<div class="flex-grow-1 auto-scroll hp-100 wp-100">
+    <ng-container *ngIf="root">
+        <tree-view [data]="root" class="wp-100">
+            <ng-template let-item="item" let-node="node" #nodeTemplate>
+                <ng-container [ngSwitch]="item.__type">
+                    <ng-container *ngSwitchCase="'group'">
+                        <ng-template *ngTemplateOutlet="group; context:{ item: item, node: node }"></ng-template>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'document-group'">
+                        <ng-template *ngTemplateOutlet="documentGroup; context:{ item: item, node: node }"></ng-template>
+                    </ng-container>
+                    <ng-container *ngSwitchCase="'activity'">
+                        <ng-template *ngTemplateOutlet="activity; context:{ item: item, node: node }"></ng-template>
+                    </ng-container>
                 </ng-container>
-                <ng-container *ngSwitchCase="'document-group'">
-                    <ng-template *ngTemplateOutlet="documentGroup; context:{ item: item, node: node }"></ng-template>
-                </ng-container>
-                <ng-container *ngSwitchCase="'activity'">
-                    <ng-template *ngTemplateOutlet="activity; context:{ item: item, node: node }"></ng-template>
-                </ng-container>
-            </ng-container>
-        </ng-template>
-    </tree-view>
-</ng-container>
-<div class="wpx-200 hpx-50 p-3 report m-3" (click)="$$produceReport()">
-    Produce Report
+            </ng-template>
+        </tree-view>
+    </ng-container>
 </div>
+
+<button *ngIf="!selected" class="btn btn-primary btn-lg m-3" disabled>
+    Produce Report
+</button>
+<ngb-alert *ngIf="!closeAlert" type="danger" (close)="$$close()">Report Created! Click home to return to home page</ngb-alert>
+<button *ngIf="selected" class="btn btn-primary btn-lg m-3" (click)="$$produceReport()">
+    Produce Report
+</button>
 <ng-template #group let-item="item" let-node="node" let-depth="depth">
     <div *ngIf="item.children?.length" class="accordion wp-100 m-1">
         <div class="pl-3 pr-3" (click)="$$toggle(node)">

@@ -1,10 +1,7 @@
 import * as DataStore from 'nedb';
 import { DataStoreOptions } from 'nedb';
 import { join } from 'path';
-import { promises } from 'fs';
 import { Activity } from './_/activity';
-import { FileData } from './_/file-data.interface';
-import { promisify } from 'util';
 import { ActivityDbTemplate } from './_/interface/activity-db-template.interface';
 
 export class ActivityDb {
@@ -47,7 +44,7 @@ export class ActivityDb {
         const doNothing = () => { return; };
     }
 
-    getActivities(): Promise<any> {
+    getActivities(): Promise<ActivityDbTemplate[]> {
         if (!this._db) throw Error('Database not instantiated.');
         const today = new Date();
         const sevenDaysAgoMilleseconds: number = today.getTime() - (this._millisecondsInADay * 7);

@@ -2,8 +2,8 @@
 @import "_colors";
 
 :host {
-    @include flex-column(flex-start, flex-start);
-
+    @include flex-column(space-between flex-start);
+    height: 100%;
     .expanded {
         @include flex-column(center, center);
         width: 0.5rem;
@@ -61,4 +61,12 @@
     text-align: left;
     border: grey;
     box-shadow: 3px 5px 5px darken($color: grey, $amount: 2);
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+}
+
+.auto-scroll {
+    overflow: auto;
 }

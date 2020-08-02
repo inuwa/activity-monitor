@@ -33,6 +33,7 @@ export class HomeComponent implements OnChanges {
     $$changeComponentState(id: string) {
         this._homeService.changeComponentState(id);
         this.activityCheck = this._homeService.activityCheck;
+
     }
 
     $$createReport(chosenActivities: Activity[]) {

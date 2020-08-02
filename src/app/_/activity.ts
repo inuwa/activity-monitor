@@ -24,7 +24,8 @@ export class Activity {
             dateModified: this.dateModified,
             dateModifiedMilliseconds: this.dateModifiedMilliseconds,
             __type: this.__type,
-            group: this.group
+            group: this.group,
+            extension: this.extension
         })
     }
 }

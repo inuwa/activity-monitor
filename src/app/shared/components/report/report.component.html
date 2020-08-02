@@ -1,4 +1,35 @@
-<div *ngFor="let activity of chosenActivities">
-    <p>{{activity | json }}</p>
+<div class="form-group">
+    <label for="exampleInputEmail1">File Input</label>
+    <input type="file" class="form-control" id="fileInput" aria-describedby="emailHelp" (change)="$$saveTemplate($event)">
+    <ngb-alert type="warning">Pick a template to create a report.</ngb-alert>
 </div>
-<button (click)="$$sendReport()">Send Report</button>
+<table class="table table-striped m-3">
+    <thead>
+        <tr>
+            <th colspan="4">Selected Activities</th>
+        </tr>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Activity</th>
+            <th scope="col">Date Modified</th>
+            <th scope="col">File Extension</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let activity of chosenActivities; index as i">
+            <th scope="row">{{ i + 1 }}</th>
+            <td>
+                {{ activity.name }}
+            </td>
+            <td>{{ activity.dateModified }}</td>
+            <td>{{ activity.extension }}</td>
+        </tr>
+    </tbody>
+</table>
+<button *ngIf="!templateSelected" class="btn btn-primary btn-lg m-3" disabled>
+    Create Report
+</button>
+<button *ngIf="templateSelected" class="btn btn-primary btn-lg m-3" (click)="$$sendReport()">
+    Create Report
+</button>
+<ngb-alert *ngIf="closeAlert" type="success" (close)="$$close()">Report Created! Click home to return to home page</ngb-alert>

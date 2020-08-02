@@ -43,44 +43,6 @@ export class HomeService {
         );
     }
 
-
-    // private _getRawActivties(): Activity[] {
-    //     const testActivites = [
-    //         {
-    //             name: 'file.docx',
-    //             dateModified: new Date(2019, 10, 7),
-    //         }, {
-    //             name: 'file.dwg',
-    //             dateModified: new Date(2020, 6, 9),
-    //         }, {
-    //             name: 'file.xlsx',
-    //             dateModified: new Date(2017, 6, 7),
-    //         }, {
-    //             name: 'file.html',
-    //             dateModified: new Date(2015, 6, 9),
-    //         }, {
-    //             name: 'file.pptx',
-    //             dateModified: new Date(2024, 8, 8),
-    //         },
-    //         {
-    //             name: 'file.rtf',
-    //             dateModified: new Date(2023, 10, 8),
-    //         }, {
-    //             name: 'file.bmp',
-    //             dateModified: new Date(2015, 8, 6),
-    //         },
-    //         {
-    //             name: 'file.xer',
-    //             dateModified: new Date(2008, 8, 8),
-    //         }, {
-    //             name: 'file.dwf',
-    //             dateModified: new Date(2003, 9, 9),
-    //         }
-    //     ]
-
-    //     // return testActivites.map(e => new Activity(e));
-    // }
-
     private _groupActivities(activities: Activity[]): GroupedActivity[] {
         const groupedActivities: GroupedActivity[] = [];
         // group activities and instantiate classes

@@ -1,14 +1,19 @@
 @import "global-mixin";
 
 :host {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
+    @include flex-column(flex-start, flex-start);
+    height: 100%;
+    overflow: hidden;
+    // background-color: #e9ecef;
+
 }
 
 .space-between {
     @include flex-row(space-between, center);
+}
+
+.jumbotron {
+    background-color: white;
 }
 
 .detail-list {
@@ -22,4 +27,8 @@
             background-color: lightgrey;
         }
     }
+}
+
+.fill-height{
+    height: calc(100% - 200px);
 }

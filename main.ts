@@ -1,5 +1,5 @@
 import { app, BrowserWindow, screen } from 'electron';
-import * as path from 'path';
+import { join } from 'path';
 import * as url from 'url';
 import { ipcMain } from 'electron';
 import { FileMaker } from './file-processing/file-maker';
@@ -7,6 +7,7 @@ import { TemplateCreator } from './file-processing/template-creator';
 import { ReadActivities } from './activities-processing/read-activities';
 import { Activity } from './activities-processing/_/activity';
 import { ActivityDb } from './activities-processing/activity-db';
+import { FileConstants } from './constants/file.enum';
 let win: BrowserWindow = null;
 const activityDb: ActivityDb = new ActivityDb();
 const args = process.argv.slice(1),
@@ -27,6 +28,7 @@ function createWindow(): BrowserWindow {
             nodeIntegration: true,
             allowRunningInsecureContent: (serve) ? true : false,
         },
+        titleBarStyle: 'hidden'
     });
 
     if (serve) {
@@ -35,13 +37,14 @@ function createWindow(): BrowserWindow {
         win.webContents.openDevTools();
 
         require('electron-reload')(__dirname, {
-            electron: require(`${__dirname}/node_modules/electron`)
+            electron: require(`${__dirname}/node_modules/electron`),
+            ignored: '*.docx'
         });
         win.loadURL('http://localhost:4200');
 
     } else {
         win.loadURL(url.format({
-            pathname: path.join(__dirname, 'dist/index.html'),
+            pathname: join(__dirname, 'dist/index.html'),
             protocol: 'file:',
             slashes: true
         }));
@@ -102,23 +105,32 @@ function _applicationMessageReceiver() {
     ipcMain.on('save-file', (event, args) => {
         const fileMaker = new FileMaker();
         const templateCreator = new TemplateCreator();
-        templateCreator.createDocx(args).then((fileBuffer) => {
-            fileMaker.writeFileToDocumentsFolder('activities.docx', fileBuffer);
-        });
+        const templatePath = join(__dirname, FileConstants.TemplateLocation);
+        templateCreator.createDocx(args, templatePath).then((fileBuffer) => {
+            fileMaker.writeFileToFolder('activities.docx', fileBuffer);
+        }).catch(e => console.log(e));
     })
+
+    ipcMain.on('save-template-file', (event, filePath) => {
+        console.log(filePath, event);
+
+        const fileMaker = new FileMaker();
+        const destFilePath = join(__dirname, FileConstants.TemplateLocation);
+        fileMaker.saveTemplateFile(filePath, destFilePath).then((response: string) => {
+            console.log(response);
+        }).catch(e => console.log(e));
+    });
 }
 
 function _insertActivities() {
-    const listOfActivities: Activity[] = ReadActivities.getActivities();
+    const listOfActivities: Activity[] = new ReadActivities().getActivities();
     if (!listOfActivities || !listOfActivities.length) return;
     // store Activities
-    // const activityDb: ActivityDb = new ActivityDb();
     activityDb.insertActivities(listOfActivities);
 }
 
 function _getActivities() {
     ipcMain.handle('get-activities', async (event, args) => {
-        // const activityDb: ActivityDb = new ActivityDb();
         return activityDb.getActivities();
     });
 }
