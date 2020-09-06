@@ -3,14 +3,23 @@
     "directories": {
         "output": "release/"
     },
-    "extraFiles": [
-        "activities-processing${/*}",
-        "activities-processing/read-activities",
-        "activities-processing/_/activity",
-        "activities-processing/activity-db",
-        "file-processing/file-maker",
-        "file-processing/template-creator",
-        "constants/file.enum"
+    "extraResources": [
+        {
+            "from": "activities-processing/read-activities.js",
+            "to": "activities-processing/read-activities.js"
+        },
+        {
+            "from": "activities-processing/activity-db.js",
+            "to": "activities-processing/activity-db.js"
+        },
+        {
+            "from": "file-processing/file-maker.js",
+            "to": "file-processing/file-maker.js"
+        },
+        {
+            "from": "file-processing/template-creator.js",
+            "to": "file-processing/template-creator.js"
+        }
     ],
     "files": [
         "**/*",
@@ -29,12 +38,12 @@
         "!tslint.json",
         "activities-processing${/*}",
         "constants${/*}",
-        "file-processing{/*}",
+        "file-processing${/*}",
         "activities-processing${/*}",
         "activities-processing/read-activities.js",
         "activities-processing/activity-db.db",
-        "file-processing/file-maker",
-        "file-processing/template-creator",
+        "file-processing/file-maker.js",
+        "file-processing/template-creator.js",
         "constants/file.enum"
     ],
     "win": {

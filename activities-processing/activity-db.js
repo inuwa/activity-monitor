@@ -14,7 +14,12 @@ var ActivityDb = /** @class */ (function () {
         this._millisecondsInADay = 86400000;
         this._createDb();
     }
-    ActivityDb.prototype.deleteActivities = function () {
+    ActivityDb.prototype._deleteOldActivities = function () {
+        var sevenDaysAgoMilleseconds = new Date().getTime() - (this._millisecondsInADay * 7);
+        this._db.remove({ dateModifiedMilliseconds: { $lte: sevenDaysAgoMilleseconds } }, { multi: true }, function (error, numberOfDeletedItems) {
+            if (error)
+                throw new Error(error.message);
+        });
     };
     ActivityDb.prototype.insertActivities = function (activities) {
         var _this = this;
@@ -46,13 +51,12 @@ var ActivityDb = /** @class */ (function () {
         var _this = this;
         if (!this._db)
             throw Error('Database not instantiated.');
-        var today = new Date();
-        var sevenDaysAgoMilleseconds = today.getTime() - (this._millisecondsInADay * 7);
+        var sevenDaysAgoMilleseconds = new Date().getTime() - (this._millisecondsInADay * 7);
         return new Promise(function (resolve, reject) {
+            _this._deleteOldActivities();
             _this._db.find({ dateModifiedMilliseconds: { $gte: sevenDaysAgoMilleseconds } }, function (error, activities) { return error ? reject(error) : resolve(__spreadArrays(activities)); });
         });
     };
-    ActivityDb.prototype._archiveActivities = function () { return; };
     ActivityDb.prototype._createDb = function () {
         var dataStoreOptions = { filename: path_1.join(__dirname, '__datastore.db'), autoload: true };
         this._db = new DataStore(dataStoreOptions);

@@ -21,7 +21,7 @@
 <button *ngIf="!selected" class="btn btn-primary btn-lg m-3" disabled>
     Produce Report
 </button>
-<ngb-alert *ngIf="!closeAlert" type="danger" (close)="$$close()">Report Created! Click home to return to home page</ngb-alert>
+<ngb-alert *ngIf="!closeAlert" type="danger" (close)="$$close()">You have not made any file changes.</ngb-alert>
 <button *ngIf="selected" class="btn btn-primary btn-lg m-3" (click)="$$produceReport()">
     Produce Report
 </button>

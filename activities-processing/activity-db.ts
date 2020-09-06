@@ -12,10 +12,11 @@ export class ActivityDb {
         this._createDb();
     }
 
-
-
-    deleteActivities() {
-
+    private _deleteOldActivities() {
+        const sevenDaysAgoMilleseconds: number = new Date().getTime() - (this._millisecondsInADay * 7);
+        this._db.remove({ dateModifiedMilliseconds: { $lte: sevenDaysAgoMilleseconds } }, { multi: true }, (error: Error, numberOfDeletedItems) => {
+            if (error) throw new Error(error.message);
+        });
     }
 
     insertActivities(activities: Activity[]) {
@@ -46,16 +47,14 @@ export class ActivityDb {
 
     getActivities(): Promise<ActivityDbTemplate[]> {
         if (!this._db) throw Error('Database not instantiated.');
-        const today = new Date();
-        const sevenDaysAgoMilleseconds: number = today.getTime() - (this._millisecondsInADay * 7);
+        const sevenDaysAgoMilleseconds: number = new Date().getTime() - (this._millisecondsInADay * 7);
         return new Promise((resolve, reject) => {
+            this._deleteOldActivities();
             this._db.find({ dateModifiedMilliseconds: { $gte: sevenDaysAgoMilleseconds } },
                 (error: Error, activities: ActivityDbTemplate[]) => error ? reject(error) : resolve([...activities])
             );
         });
     }
-
-    private _archiveActivities() { return; }
 
     private _createDb() {
         const dataStoreOptions: DataStoreOptions = { filename: join(__dirname, '__datastore.db'), autoload: true }
